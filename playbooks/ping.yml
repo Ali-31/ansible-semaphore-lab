@@ -1,0 +1,8 @@
+---
+- name: Ping workers from Semaphore
+  hosts: workers
+  gather_facts: false
+
+  tasks:
+    - name: Test Ansible connectivity
+      ansible.builtin.ping:
