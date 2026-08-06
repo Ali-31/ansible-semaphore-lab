@@ -1,0 +1,31 @@
+---
+- name: Install basic packages
+  hosts: workers
+  gather_facts: true
+  become: true
+
+  vars:
+    basic_packages:
+      - curl
+      - vim
+      - htop
+      - tree
+      - netcat-openbsd
+
+  tasks:
+    - name: Ensure this playbook runs on Debian family only
+      ansible.builtin.assert:
+        that:
+          - ansible_os_family == "Debian"
+        fail_msg: "This playbook supports only Debian/Ubuntu systems."
+        success_msg: "OS family is Debian. Continuing..."
+
+    - name: Update apt cache
+      ansible.builtin.apt:
+        update_cache: true
+        cache_valid_time: 3600
+
+    - name: Install basic packages
+      ansible.builtin.apt:
+        name: "{{ basic_packages }}"
+        state: present
