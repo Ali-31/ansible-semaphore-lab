@@ -7,4 +7,53 @@
     app_base_dir: /tmp/lab-app
     app_config_file: /tmp/lab-app/app.conf
     app_owner: ansible
-    app_group:
+    app_group: ansible
+
+  tasks:
+    # - name: Create application base directory
+    #   ansible.builtin.file:
+    #     path: "{{ app_base_dir }}"
+    #     state: directory
+    #     owner: "{{ app_owner }}"
+    #     group: "{{ app_group }}"
+    #     mode: "0755"
+
+    # - name: Create logs directory
+    #   ansible.builtin.file:
+    #     path: "{{ app_base_dir }}/logs"
+    #     state: directory
+    #     owner: "{{ app_owner }}"
+    #     group: "{{ app_group }}"
+    #     mode: "0755"
+
+    # - name: Create data directory
+    #   ansible.builtin.file:
+    #     path: "{{ app_base_dir }}/data"
+    #     state: directory
+    #     owner: "{{ app_owner }}"
+    #     group: "{{ app_group }}"
+    #     mode: "0750"
+
+    - name: Create application config file
+      ansible.builtin.copy:
+        dest: "{{ app_config_file }}"
+        owner: "{{ app_owner }}"
+        group: "{{ app_group }}"
+        mode: "0644"
+        content: |
+          app_name=lab-app
+          environment=lab
+          node={{ inventory_hostname }}
+          managed_by=ansible
+
+    - name: Check config file status
+      ansible.builtin.stat:
+        path: "{{ app_config_file }}"
+      register: config_stat
+
+    - name: Show config file information
+      ansible.builtin.debug:
+        msg:
+          - "Config exists: {{ config_stat.stat.exists }}"
+          - "Config path: {{ app_config_file }}"
+          - "Config mode: {{ config_stat.stat.mode }}"
