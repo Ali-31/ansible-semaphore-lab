@@ -1,0 +1,41 @@
+---
+- name: Demo Ansible variables from Semaphore
+  hosts: workers
+  gather_facts: false
+
+  vars:
+    env_name: lab
+    app_name: demo-app
+    app_port: 8080
+
+  tasks:
+    - name: Show basic variables
+      ansible.builtin.debug:
+        msg:
+          - "Environment name: {{ env_name }}"
+          - "Application name: {{ app_name }}"
+          - "Application port: {{ app_port }}"
+          - "Config path: {{ config_path }}"
+
+    - name: Create application config file
+      ansible.builtin.copy:
+        dest: "{{ config_path }}"
+        owner: ansible
+        group: ansible
+        mode: "0644"
+        content: |
+          environment={{ env_name }}
+          app_name={{ app_name }}
+          app_port={{ app_port }}
+          managed_by=ansible
+          generated_from=semaphore
+
+    - name: Read generated config
+      ansible.builtin.command:
+        cmd: "cat {{ config_path }}"
+      register: config_output
+      changed_when: false
+
+    - name: Show generated config content
+      ansible.builtin.debug:
+        var: config_output.stdout_lines
