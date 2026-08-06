@@ -1,0 +1,4 @@
+---
+service_role: database
+service_name: postgresql
+service_port: 5432

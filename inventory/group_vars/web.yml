@@ -1,0 +1,4 @@
+---
+service_role: web
+service_name: nginx
+service_port: 8080
