@@ -1,0 +1,18 @@
+---
+- name: Inspect inventory groups and variables
+  hosts: workers
+  gather_facts: true
+
+  tasks:
+    - name: Show inventory identity
+      ansible.builtin.debug:
+        msg:
+          - "Inventory hostname: {{ inventory_hostname }}"
+          - "System hostname: {{ ansible_hostname }}"
+          - "Groups: {{ group_names | join(', ') }}"
+          - "Node ID: {{ node_id }}"
+          - "Deployment zone: {{ deployment_zone }}"
+          - "Environment: {{ environment_name }}"
+          - "Service role: {{ service_role }}"
+          - "Service name: {{ service_name }}"
+          - "Service port: {{ service_port }}"
