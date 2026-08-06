@@ -1,0 +1,25 @@
+---
+- name: Demo command register and when
+  hosts: workers
+  gather_facts: false
+
+  tasks:
+    - name: Get current hostname
+      ansible.builtin.command:
+        cmd: hostname
+      register: hostname_result
+      changed_when: false
+
+    - name: Show hostname command output
+      ansible.builtin.debug:
+        msg: "Hostname is {{ hostname_result.stdout }}"
+
+    - name: Run only on worker1
+      ansible.builtin.debug:
+        msg: "This task runs only on worker1"
+      when: inventory_hostname == "worker1"
+
+    - name: Run only on worker2
+      ansible.builtin.debug:
+        msg: "This task runs only on worker2"
+      when: inventory_hostname == "worker2"
