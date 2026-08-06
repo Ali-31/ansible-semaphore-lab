@@ -3,12 +3,6 @@
   hosts: workers
   gather_facts: false
 
-  vars:
-    env_name: lab
-    app_name: demo-app
-    app_port: 8080
-    config_path: /tmp/demo-app.conf
-
   tasks:
     - name: Show basic variables
       ansible.builtin.debug:
