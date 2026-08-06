@@ -16,7 +16,7 @@
     - name: Ensure this playbook runs on Debian family only
       ansible.builtin.assert:
         that:
-          - ansible_os_family == "Debian"
+          - ansible_facts["os_family"] == "Debian"
         fail_msg: "This playbook supports only Debian/Ubuntu systems."
         success_msg: "OS family is Debian. Continuing..."
 
