@@ -1,0 +1,10 @@
+---
+- name: Manage files and directories
+  hosts: workers
+  gather_facts: false
+
+  vars:
+    app_base_dir: /tmp/lab-app
+    app_config_file: /tmp/lab-app/app.conf
+    app_owner: ansible
+    app_group:
